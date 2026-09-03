@@ -1,0 +1,4 @@
+# Resolved, non-secret configuration for the regime engine (CLAUDE.md section 17).
+# Only the version identifier is meaningful in Phase 1; thresholds, weights,
+# calendars, symbols, and freshness limits are added as later phases land.
+config_version: "0.1.0"
