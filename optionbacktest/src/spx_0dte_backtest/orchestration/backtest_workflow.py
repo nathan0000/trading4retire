@@ -139,7 +139,8 @@ class BacktestWorkflow:
 
         trade_frame = records_to_frame(records)
         if not trade_frame.empty:
-            closes = spx.bars.set_index("timestamp")["close"]
+            # Feature rows are labelled by when their close is known.
+            closes = featured.set_index("timestamp")["close"]
             trade_frame["spx_exit"] = trade_frame["exit_timestamp"].map(closes)
         else:
             trade_frame["spx_exit"] = pd.Series(dtype="float64")

@@ -11,7 +11,11 @@ a backward as-of join, and expected move treats VIX as percentage points:
 SPX * (VIX / 100) / sqrt(252)
 ```
 
-Every output records its source timestamp as `data_cutoff_timestamp`. Prefix-invariance
+Every output row is labelled by the time its data is known, and records that time as
+`data_cutoff_timestamp`. With `timestamp_semantics: bar_start`, a bar's close is only
+known when the bar ends, so `timestamp` is moved to the bar end and the source label is
+kept in `bar_start`. A 10:45 entry therefore uses the 10:40–10:45 bar, never the bar
+that is still forming. Prefix-invariance
 tests prove later SPX rows cannot alter an earlier row. Feature windows and rule-based
 classification thresholds are held in immutable, injectable `FeatureSettings`.
 
