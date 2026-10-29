@@ -4,6 +4,7 @@ from spx_0dte_backtest.backtest.engine import (
     BacktestEngine,
     BacktestSettings,
     MissingForcedExitQuotes,
+    StopTrigger,
 )
 from spx_0dte_backtest.backtest.metrics import (
     BacktestMetrics,
@@ -45,5 +46,6 @@ __all__ = [
     "Position",
     "PositionState",
     "Portfolio",
+    "StopTrigger",
     "TradeRecord",
 ]

@@ -315,6 +315,7 @@ class BacktestWorkflow:
             "lifecycle": {
                 "forced_exit_time": lifecycle.forced_exit_time.isoformat(),
                 "timezone": lifecycle.timezone,
+                "stop_trigger": str(lifecycle.stop_trigger),
             },
         }
 
