@@ -11,6 +11,7 @@ from spx_0dte_backtest.execution import (
     ExecutionMode,
     ExecutionPurpose,
     ExecutionSettings,
+    MissingExitQuote,
     OrderSide,
 )
 from spx_0dte_backtest.strategies import IronCondorStrategy, TradeCandidate
@@ -115,6 +116,26 @@ def test_exit_requires_one_exact_quote_for_every_contract(candidate: TradeCandid
         ExecutionEngine().execute_exit(candidate.legs, quotes[:-1])
     with pytest.raises(ValueError, match="duplicate exit quote"):
         ExecutionEngine().execute_exit(candidate.legs, quotes + (quotes[0],))
+
+
+def test_missing_exit_quote_has_a_dedicated_error(candidate: TradeCandidate) -> None:
+    with pytest.raises(MissingExitQuote):
+        ExecutionEngine().execute_exit(candidate.legs, exit_quotes(candidate)[:-1])
+
+
+def test_mark_to_close_uses_leg_mids(candidate: TradeCandidate) -> None:
+    quotes = exit_quotes(candidate)
+    by_key = {(q.option_type, q.strike): q for q in quotes}
+    expected = sum(
+        -leg.quantity
+        * (
+            by_key[(leg.quote.option_type, leg.quote.strike)].bid
+            + by_key[(leg.quote.option_type, leg.quote.strike)].ask
+        )
+        / 2
+        for leg in candidate.legs
+    )
+    assert ExecutionEngine().mark_to_close(candidate.legs, quotes) == pytest.approx(expected)
 
 
 def test_rejected_candidate_cannot_be_executed() -> None:

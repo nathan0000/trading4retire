@@ -8,6 +8,8 @@ At the time of review:
 
 The code is imported unchanged. Findings are listed most severe first.
 
+**Status:** items 1–3 and 8, plus CI (item 9), are fixed on `fix/review-high-findings`.
+
 ## High
 
 ### 1. Look-ahead bias at entry (`optionbacktest`)
