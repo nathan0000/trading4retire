@@ -1,0 +1,40 @@
+date,status,close_time,label
+2024-01-01,CLOSED,,New Year's Day
+2024-01-15,CLOSED,,Martin Luther King Jr. Day
+2024-02-19,CLOSED,,Washington's Birthday
+2024-03-29,CLOSED,,Good Friday
+2024-05-27,CLOSED,,Memorial Day
+2024-06-19,CLOSED,,Juneteenth National Independence Day
+2024-07-03,EARLY_CLOSE,13:00,Day before Independence Day
+2024-07-04,CLOSED,,Independence Day
+2024-09-02,CLOSED,,Labor Day
+2024-11-28,CLOSED,,Thanksgiving Day
+2024-11-29,EARLY_CLOSE,13:00,Day after Thanksgiving
+2024-12-24,EARLY_CLOSE,13:00,Christmas Eve
+2024-12-25,CLOSED,,Christmas Day
+2025-01-01,CLOSED,,New Year's Day
+2025-01-09,CLOSED,,National Day of Mourning for President Jimmy Carter
+2025-01-20,CLOSED,,Martin Luther King Jr. Day
+2025-02-17,CLOSED,,Washington's Birthday
+2025-04-18,CLOSED,,Good Friday
+2025-05-26,CLOSED,,Memorial Day
+2025-06-19,CLOSED,,Juneteenth National Independence Day
+2025-07-03,EARLY_CLOSE,13:00,Day before Independence Day
+2025-07-04,CLOSED,,Independence Day
+2025-09-01,CLOSED,,Labor Day
+2025-11-27,CLOSED,,Thanksgiving Day
+2025-11-28,EARLY_CLOSE,13:00,Day after Thanksgiving
+2025-12-24,EARLY_CLOSE,13:00,Christmas Eve
+2025-12-25,CLOSED,,Christmas Day
+2026-01-01,CLOSED,,New Year's Day
+2026-01-19,CLOSED,,Martin Luther King Jr. Day
+2026-02-16,CLOSED,,Washington's Birthday
+2026-04-03,CLOSED,,Good Friday
+2026-05-25,CLOSED,,Memorial Day
+2026-06-19,CLOSED,,Juneteenth National Independence Day
+2026-07-03,CLOSED,,Independence Day (observed; July 4 falls on Saturday)
+2026-09-07,CLOSED,,Labor Day
+2026-11-26,CLOSED,,Thanksgiving Day
+2026-11-27,EARLY_CLOSE,13:00,Day after Thanksgiving
+2026-12-24,EARLY_CLOSE,13:00,Christmas Eve
+2026-12-25,CLOSED,,Christmas Day

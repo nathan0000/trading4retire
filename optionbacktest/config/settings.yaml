@@ -1,0 +1,19 @@
+project:
+  timezone: America/New_York
+  results_directory: results
+
+data:
+  timestamp_column: timestamp
+  timestamp_semantics: bar_start
+  source_timezone: null
+  expected_frequency_minutes: 5
+  strict_validation: true
+
+market:
+  calendar: XNYS
+  regular_open: "09:30"
+  regular_close: "16:00"
+
+logging:
+  level: INFO
+

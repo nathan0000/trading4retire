@@ -1,0 +1,31 @@
+{
+    "name": "Option Backtest - Codex",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+
+    "workspaceMount": "source=/volume1/docker/optionbacktest,target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+
+    "remoteUser": "root",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python"
+            }
+        }
+    },
+
+    "postCreateCommand": "python --version && node --version && codex --version && uv --version",
+
+    "remoteEnv": {
+        "PYTHONUNBUFFERED": "1"
+    }
+}

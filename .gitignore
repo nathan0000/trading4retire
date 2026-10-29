@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+
+# Tool caches and coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+
+# Local configuration and secrets
+.env
+.claude/settings.local.json
+
+# Data and run outputs: large or licensed datasets stay out of source control
+*.zip
+data/vendor/
+results/
+
+# OS and Synology artifacts
+.DS_Store
+@eaDir/
+*_Conflict*
