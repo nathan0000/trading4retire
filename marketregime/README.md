@@ -16,6 +16,10 @@ models, the clock/calendar ports, a fixture NYSE-calendar adapter, and the
 application pipeline are not implemented yet — see `docs/architecture.md`
 for what's real vs. placeholder.
 
+Also available: `MarketRegimeSnapshot`, a five-indicator intraday SPX gate
+(20/40 EMA, session VWAP, RSI, ATR vs. opening baseline, SPY/QQQ confirmation).
+See `docs/intraday_regime_gate.md`.
+
 ## Development
 
 Requires Python >=3.12 and [`uv`](https://docs.astral.sh/uv/).

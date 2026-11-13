@@ -1,0 +1,29 @@
+# `base` is the strategy that `run` backtests. `sweep` lists dotted-path overrides
+# that `grid` crosses; `matrix` chooses the two axes of the sensitivity tables.
+
+base:
+  name: iron_condor_16d_45dte
+  template: iron_condor
+  min_dte: 30
+  max_dte: 45
+  strike: {method: delta, value: 0.16}
+  wing: {method: dollar, value: 10}
+  quantity: 1
+  entry:
+    max_open_positions: 3
+    min_days_between_entries: 7
+    max_spread_pct: 0.5
+    min_open_interest: 100
+  exit:
+    profit_target_pct: 0.5
+    stop_loss_multiple: 2.0
+    exit_dte: 21
+
+sweep:
+  strike.value: [0.10, 0.16, 0.20, 0.30]
+  wing.value: [5, 10, 20]
+
+matrix:
+  x: strike.value
+  y: wing.value
+  metrics: [sharpe, net_pnl, win_rate, max_drawdown]
