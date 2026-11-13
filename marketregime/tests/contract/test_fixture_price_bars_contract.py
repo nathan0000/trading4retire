@@ -69,7 +69,9 @@ def test_bar_excluded_when_as_of_before_available_time(adapter: FixturePriceBars
 
 def test_filters_by_symbol_and_date_range(adapter: FixturePriceBarsAdapter) -> None:
     narrow_start = datetime(2024, 1, 8, tzinfo=UTC)
-    narrow_end = datetime(2024, 1, 12, tzinfo=UTC)
+    # Daily bars are stamped at the 16:00 New York close (21:00 UTC), so the
+    # range must extend past that instant to include the 2024-01-12 bar.
+    narrow_end = datetime(2024, 1, 13, tzinfo=UTC)
     bars = adapter.get_bars(
         "SPX", narrow_start, narrow_end, "1d", as_of=datetime(2030, 1, 1, tzinfo=UTC)
     )

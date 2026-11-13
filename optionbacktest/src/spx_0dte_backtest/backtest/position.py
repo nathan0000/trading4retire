@@ -54,6 +54,8 @@ class TradeRecord:
     entry_execution: ExecutionResult
     exit_execution: ExecutionResult
     state_history: tuple[PositionState, ...]
+    exit_trigger_mark: float | None = None
+    skipped_marks: int = 0
 
 
 @dataclass(slots=True)
@@ -135,7 +137,7 @@ class Position:
             self.exit_reason = ExitReason.FORCED_EXIT
             self._transition(PositionState.FORCED_EXIT)
 
-    def to_record(self, exit_execution: ExecutionResult) -> TradeRecord:
+    def to_record(self, exit_execution: ExecutionResult, *, skipped_marks: int = 0) -> TradeRecord:
         if self.state not in TERMINAL_STATES or self.exit_reason is None:
             raise ValueError("only a terminal position can produce a trade record")
         debit = exit_execution.exit_debit_points
@@ -160,6 +162,8 @@ class Position:
             entry_execution=self.entry_execution,
             exit_execution=exit_execution,
             state_history=self.state_history,
+            exit_trigger_mark=self.current_mark_to_close,
+            skipped_marks=skipped_marks,
         )
 
     def _transition(self, state: PositionState) -> None:

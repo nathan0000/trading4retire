@@ -8,6 +8,7 @@ from spx_0dte_backtest.execution.execution_engine import (
     ExecutionPurpose,
     ExecutionResult,
     ExecutionSettings,
+    MissingExitQuote,
     OrderSide,
 )
 
@@ -19,5 +20,6 @@ __all__ = [
     "ExecutionPurpose",
     "ExecutionResult",
     "ExecutionSettings",
+    "MissingExitQuote",
     "OrderSide",
 ]

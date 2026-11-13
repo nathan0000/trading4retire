@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  optionbacktest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: optionbacktest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: optionbacktest/uv.lock
+      - run: uv sync --locked --extra dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check src tests
+      - run: uv run pytest
+
+  marketregime:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: marketregime
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: marketregime/uv.lock
+      - run: uv sync --locked
+      - run: make check

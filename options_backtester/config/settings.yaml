@@ -1,0 +1,46 @@
+# Engine settings. Secrets are never stored here: adapters read them from the
+# environment (SCHWAB_CLIENT_ID, SCHWAB_CLIENT_SECRET) or from a local terminal.
+
+data:
+  # synthetic | synthetic-yfinance | yfinance | thetadata | ibkr | schwab
+  provider: synthetic
+  cache_dir: data_cache
+  providers:
+    synthetic:
+      seed: 7
+    thetadata:
+      base_url: http://127.0.0.1:25510/v2
+      security_type: stock        # "index" for SPX and other cash indices
+      max_dte: 120
+    ibkr:
+      host: 127.0.0.1
+      port: 7497
+      client_id: 17
+    schwab:
+      token_path: ~/.config/options_backtester/schwab_token.json
+    yfinance:
+      max_dte: 120
+
+greeks:
+  risk_free_rate: 0.04
+  dividend_yield: 0.0
+  model: bsm                      # "baw" for American-style equity/ETF options
+
+backtest:
+  symbol: SPY
+  start: 2022-01-03
+  end: 2024-12-31
+  initial_capital: 100000
+  max_margin_utilization: 0.5
+  settlement: cash
+  execution:
+    fill_model: SLIPPAGE          # MID | NATURAL | SLIPPAGE
+    spread_fraction: 0.25         # share of the bid-ask spread paid away from mid
+    liquid_volume: 100
+    commission_per_contract: 0.65
+    fee_per_contract: 0.05
+    multiplier: 100
+
+report:
+  out_dir: results
+  attribution_min_trades: 10

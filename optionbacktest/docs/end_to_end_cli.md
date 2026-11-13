@@ -42,7 +42,9 @@ uv run python -m scripts.run_backtest --spx ... --options ... --output ...
 10. Normalize completed trades and attach SPX at the exact exit timestamp.
 11. Generate metrics, charts, Parquet outputs, and audit manifests.
 
-Accepted candidates with missing or malformed lifecycle quotes fail the run. They
+Accepted candidates with malformed lifecycle quotes, or an incomplete 15:55 forced-exit
+snapshot, fail the run. Intermediate monitoring snapshots missing a leg are skipped and
+counted in `skipped_marks`. They
 are never silently omitted from performance. A valid run with no accepted trades
 still produces zero-trade metrics and explicit skipped-chart reasons.
 

@@ -5,6 +5,7 @@ description = "Point-in-time market regime engine for SPX / 0DTE options decisio
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "numpy>=1.26",
     "pydantic>=2.7,<3",
     "tzdata>=2024.1",
 ]

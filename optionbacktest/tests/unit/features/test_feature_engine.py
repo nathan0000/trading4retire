@@ -66,6 +66,24 @@ def test_feature_engine_has_required_phase_two_columns() -> None:
     assert result["data_cutoff_timestamp"].equals(result["timestamp"])
 
 
+def test_bar_start_rows_are_labelled_when_their_close_is_known() -> None:
+    bars = make_bars(3)
+    result = FeatureEngine(AppConfig()).compute(bars)
+    # The 09:30 bar covers 09:30-09:35, so its close is first known at 09:35.
+    assert result["bar_start"].equals(bars["timestamp"])
+    assert result["timestamp"].equals(bars["timestamp"] + pd.Timedelta(minutes=5))
+    assert result["data_cutoff_timestamp"].equals(result["timestamp"])
+    assert result.iloc[0]["close"] == pytest.approx(bars.iloc[0]["close"])
+
+
+def test_bar_end_rows_keep_their_timestamps() -> None:
+    bars = make_bars(3)
+    config = AppConfig(data=AppConfig().data.model_copy(update={"timestamp_semantics": "bar_end"}))
+    result = FeatureEngine(config).compute(bars)
+    assert "bar_start" not in result.columns
+    assert result["timestamp"].equals(bars["timestamp"])
+
+
 def test_future_rows_cannot_change_features_at_timestamp() -> None:
     bars = make_bars(40)
     engine = FeatureEngine(AppConfig())

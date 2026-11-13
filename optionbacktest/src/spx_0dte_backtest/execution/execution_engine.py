@@ -13,6 +13,10 @@ from spx_0dte_backtest.data import OptionQuote
 from spx_0dte_backtest.strategies import TradeCandidate, TradeLeg, TradeLegRole
 
 
+class MissingExitQuote(ValueError):
+    """Raised when a snapshot has no quote for one of the open legs."""
+
+
 class ExecutionMode(StrEnum):
     MID = "MID"
     BID_ASK = "BID_ASK"
@@ -112,32 +116,54 @@ class ExecutionEngine:
         open_legs: tuple[TradeLeg, ...],
         exit_quotes: Iterable[OptionQuote],
     ) -> ExecutionResult:
+        orders = tuple(
+            (leg, OrderSide.SELL if leg.quantity > 0 else OrderSide.BUY, quote)
+            for leg, quote in self._match_exit_quotes(open_legs, exit_quotes)
+        )
+        return self._execute(orders, ExecutionPurpose.EXIT)
+
+    def mark_to_close(
+        self,
+        open_legs: tuple[TradeLeg, ...],
+        quotes: Iterable[OptionQuote],
+    ) -> float:
+        """Mid-price cost to close the open legs, in points, floored at zero."""
+
+        cost = sum(
+            -leg.quantity * (quote.bid + quote.ask) / 2.0
+            for leg, quote in self._match_exit_quotes(open_legs, quotes)
+        )
+        return max(0.0, cost)
+
+    def _match_exit_quotes(
+        self,
+        open_legs: tuple[TradeLeg, ...],
+        exit_quotes: Iterable[OptionQuote],
+    ) -> tuple[tuple[TradeLeg, OptionQuote], ...]:
         if not open_legs:
             raise ValueError("open legs are required")
-        quote_list = tuple(exit_quotes)
         lookup: dict[_ContractKey, OptionQuote] = {}
-        for quote in quote_list:
+        for quote in exit_quotes:
             key = self._key(quote)
             if key in lookup:
                 raise ValueError(f"duplicate exit quote for {quote.contract_symbol or key}")
             lookup[key] = quote
 
-        orders: list[tuple[TradeLeg, OrderSide, OptionQuote]] = []
+        matched: list[tuple[TradeLeg, OptionQuote]] = []
         timestamps: set[pd.Timestamp] = set()
         for leg in open_legs:
             quote = lookup.get(self._key(leg.quote))
             if quote is None:
-                raise ValueError(
+                raise MissingExitQuote(
                     f"missing exit quote for {leg.quote.contract_symbol or self._key(leg.quote)}"
                 )
             if pd.Timestamp(quote.timestamp) <= pd.Timestamp(leg.quote.timestamp):
                 raise ValueError("exit quote must be later than its entry quote")
             timestamps.add(pd.Timestamp(quote.timestamp))
-            side = OrderSide.SELL if leg.quantity > 0 else OrderSide.BUY
-            orders.append((leg, side, quote))
+            matched.append((leg, quote))
         if len(timestamps) != 1:
             raise ValueError("all exit quotes must come from one exact snapshot")
-        return self._execute(tuple(orders), ExecutionPurpose.EXIT)
+        return tuple(matched)
 
     def _execute(
         self,
